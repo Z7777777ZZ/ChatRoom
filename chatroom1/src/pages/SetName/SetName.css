@@ -1,0 +1,70 @@
+/* SetName.css */
+
+
+
+.setName {
+    /* 添加背景图片样式，url() 中填入你的背景图片路径 */
+    background: url('../bizhi1.jpg') center/cover;
+    /* 设置页面最小高度，保证内容能够显示在视图中 */
+    min-height: 100vh;
+    /* 设置半透明背景颜色，rgba 中的最后一个值表示透明度，0.5 表示半透明 */
+    background-color: rgba(255, 255, 255, 0.5);
+    /* 居中显示容器内容 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    /* 设置边框圆角 */
+    border-radius: 8px;
+    /* 设置半透明效果 */
+    opacity: 0.8;
+    /* 设置内边距 */
+    padding: 20px;
+    /* 设置阴影效果 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+
+}
+
+button {
+    /* 设置按钮样式 */
+    background-color: #007bff;
+    /* 设置按钮背景颜色 */
+    color: white;
+    /* 设置文字颜色为白色 */
+    padding: 10px 15px;
+    /* 设置内边距 */
+    border: none;
+    /* 移除边框 */
+    border-radius: 4px;
+    /* 设置圆角 */
+    cursor: pointer;
+
+    /* 设置鼠标样式为手型 */
+    /* 鼠标悬停时的样式 */
+    &:hover {
+        background-color: #0056b3;
+        /* 设置悬停时的背景颜色 */
+    }
+}
+
+h2 {
+    text-align: center;
+    color: white;
+}
