@@ -4,7 +4,7 @@ import './ChatRoom.css';
 
 // 单条消息接口
 interface Message {
-    roomId: number;
+    messageId: number;
     content: string; // 消息内容
     uname: string; // 用户名
 }
@@ -35,7 +35,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomName, username }) => {
         if (inputMessage.trim() !== '' && currentRoom) {
             // 如果满足，则新建消息
             const newMessage: Message = {
-                roomId: currentRoom.messages.length + 1,
+                messageId: currentRoom.messages.length + 1,
                 content: inputMessage,
                 uname: username, // 使用当前用户的用户名
             };
@@ -120,6 +120,38 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomName, username }) => {
         }
     };
 
+    // 获取某一房间的历史消息的函数
+    const fetchRoomMessages = async (roomId: number) => {
+        try {
+            // 获取某一房间历史消息的API端点，假设是 /api/room/message/list
+            const response = await fetch(`/api/room/message/list?roomId=${roomId}`);
+            if (response.ok) {
+                const roomMessages: Message[] = await response.json();
+                // 更新当前房间的消息列表
+                setCurrentRoom((prevRoom) => {
+                    if (prevRoom) {
+                        return {
+                            ...prevRoom,
+                            messages: roomMessages,
+                        };
+                    }
+                    return null;
+                });
+            } else {
+                // 处理错误
+                console.error('获取历史消息失败');
+            }
+        } catch (error) {
+            console.error('获取历史消息失败:', error);
+        }
+    };
+
+    // 切换房间时触发获取历史消息
+    const handleSwitchRoom = (room: Room) => {
+        setCurrentRoom(room);
+        fetchRoomMessages(room.roomId);
+    };
+
     // 渲染组件
     return (
         // 房间列表
@@ -132,7 +164,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomName, username }) => {
                     <div
                         key={room.name}
                         className={`room ${currentRoom?.name === room.name ? 'active' : ''}`}
-                        onClick={() => setCurrentRoom(room)}
+                        onClick={() => handleSwitchRoom(room)}
                     >
                         <span>{room.name}</span>
                         <button className="deleteRoomButton" onClick={handleDeleteRoom}>
@@ -147,7 +179,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomName, username }) => {
                 <div className="messageList">
                     {currentRoom?.messages.map((message) => (
                         <div
-                            key={message.roomId}
+                            key={message.messageId}
                             className={`message ${message.uname === username ? 'sentMessage' : 'receivedMessage'}`}
                         >
                             {`${message.uname}: ${message.content}`}
